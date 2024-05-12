@@ -14,17 +14,17 @@ import com.springboot.intuit.utils.Validation;
 public class CategoryController {
 
     private CategoryService categoryService;
-    private Validation val;
+    private Validation validation;
 
     public CategoryController(CategoryService categoryService, Validation val) {
         this.categoryService = categoryService;
-        this.val = val;
+        this.validation = validation;
     }
 
     // Build Add Category REST API
     @PostMapping
     public ResponseEntity<CategoryDto> addCategory(@RequestBody CategoryDto categoryDto) {
-        val.validateName(categoryDto.getName());
+        validation.validateName(categoryDto.getName());
         CategoryDto savedCategory = categoryService.addCategory(categoryDto);
         return ResponseEntity.ok(savedCategory);
 
@@ -53,7 +53,7 @@ public class CategoryController {
             @PathVariable("id") Long categoryId) {
 
         if (categoryDto.getName() != null) {
-            val.validateName(categoryDto.getName());
+            validation.validateName(categoryDto.getName());
         }
         CategoryDto savedCategory = categoryService.updateCategory(categoryDto, categoryId);
         return ResponseEntity.ok(savedCategory);

@@ -28,8 +28,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BlogAPIException.class)
-    public ResponseEntity<ErrorDetails> handleBlogAPIException(BlogAPIException exception,
+    @ExceptionHandler(MusicExchangeAPIException.class)
+    public ResponseEntity<ErrorDetails> handleMusicExchangeAPIException(MusicExchangeAPIException exception,
                                                                         WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
                 webRequest.getDescription(false));

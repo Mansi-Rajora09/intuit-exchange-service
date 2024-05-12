@@ -1,4 +1,4 @@
-# Steps to Run Spring Boot Blog App
+# Steps to Run Spring Boot MusicExchange App
 ## 1. Maven Build the Project
 If you have installed Maven on your machine then use the below command:
 ```
@@ -10,7 +10,7 @@ If you haven't insatlled Maven on your machine then use below command:
  ```
  Note: Go to root directory of the project and execute above command.
  ## 2. Create a Database
- Before running Spring boot blog application, you need to create the MySQL database.
+ Before running Spring boot music exchange application, you need to create the MySQL database.
  
  Use the below SQL database to create the MySQL database:
  ```sql
@@ -29,4 +29,4 @@ User below Insert SQL statements to insert records into roles table:
 ```sql
 INSERT INTO `intuit.roles` VALUES (1,'ROLE_ADMIN'),(2,'ROLE_USER');
 ```
-Now, Spring boot blog application is ready to use.
+Now, Spring boot music exchange application is ready to use.

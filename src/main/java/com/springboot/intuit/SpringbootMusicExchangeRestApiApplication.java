@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class SpringbootBlogRestApiApplication {
+public class SpringbootMusicExchangeRestApiApplication {
 
 	@Bean
 	public ModelMapper modelMapper() {
@@ -15,7 +15,7 @@ public class SpringbootBlogRestApiApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootBlogRestApiApplication.class, args);
+		SpringApplication.run(SpringbootMusicExchangeRestApiApplication.class, args);
 	}
 
 }
