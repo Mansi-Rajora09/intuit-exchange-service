@@ -12,5 +12,5 @@ public interface InstrumentService {
 
     InstrumentDto updateInstrument(InstrumentDto instrumentDto, Long instrumentId);
 
-    void deleteInstrument(Long instrumentId);
+    void deleteInstrument(Long instrumentId, String userId);
 }

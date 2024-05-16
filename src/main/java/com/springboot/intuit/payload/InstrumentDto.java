@@ -18,10 +18,13 @@ public class InstrumentDto {
     private String title;
     private String brand;
     private String userId;
-    private Boolean isAvailable = true;
+    private Boolean isAvailable;
     private Double ratings = 0.0;
     private String condition;
     private String tags;
     private int limitValue;
     private String instrumentCondition;
+    private String availableFromDate;
+    private String availableToDate;
+
 }

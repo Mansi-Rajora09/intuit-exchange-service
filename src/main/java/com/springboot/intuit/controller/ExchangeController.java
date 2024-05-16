@@ -6,6 +6,7 @@ import com.springboot.intuit.payload.ExchangeInfoDto;
 import com.springboot.intuit.payload.ExchangeInfoDtoResponse;
 import com.springboot.intuit.service.ExchangeInfoService;
 import com.springboot.intuit.utils.AppConstants;
+import com.springboot.intuit.utils.Utility;
 import com.springboot.intuit.utils.Validation;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,20 +15,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api/v1/bookings")
+@RequestMapping("/intuit/api/v1/bookings")
 public class ExchangeController {
 
     private ExchangeInfoService bookingService;
     private Validation val;
+    private Utility utility;
 
-    public ExchangeController(ExchangeInfoService bookingService, Validation val) {
+    public ExchangeController(ExchangeInfoService bookingService, Validation val,Utility utility) {
         this.bookingService = bookingService;
         this.val = val;
-
+        this.utility=utility;
     }
 
     // Endpoint to initiate a booking request
@@ -69,6 +70,7 @@ public class ExchangeController {
             @PathVariable Long userId) {
         ExchangeInfoDtoResponse bookingHistory = bookingService.getBookingHistory(userId, pageNo, pageSize, sortBy,
                 sortDir);
+                //instrument -userid
         return ResponseEntity.ok(bookingHistory);
     }
 
@@ -86,10 +88,8 @@ public class ExchangeController {
 
         ExchangeInfoDtoResponse upcomingBookings;
         if (fromDate != null && toDate != null) {
-            String format = "yyyy-MM-dd";
-
-            Date fromDateFormat = stringToDate(fromDate, format);
-            Date toDateFormat = stringToDate(toDate, format);
+            Date fromDateFormat = utility.stringToDate(fromDate);
+            Date toDateFormat = utility.stringToDate(toDate);
 
             upcomingBookings = bookingService.getUpcomingBookingsByDateRange(userId, pageNo, pageSize, sortBy, sortDir,
                     state, fromDateFormat, toDateFormat);
@@ -99,9 +99,7 @@ public class ExchangeController {
         return ResponseEntity.ok(upcomingBookings);
     }
 
-    public static Date stringToDate(String dateString, String format) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        return dateFormat.parse(dateString);
-    }
+   
+
 
 }

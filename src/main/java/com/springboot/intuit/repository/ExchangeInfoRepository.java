@@ -22,4 +22,8 @@ public interface ExchangeInfoRepository extends JpaRepository<ExchangeInfo, Long
     Page<ExchangeInfo> findUpcomingBookingsByDateRange(Pageable pageable, Long userId, Date fromDate, Date toDate,
             BookingState state);
 
+     @Query("SELECT b FROM ExchangeInfo b WHERE b.state = ?1 AND b.returnDate <= ?2")
+     List<ExchangeInfo> findByStateAndReturnDateLessThanEqual(BookingState state, Date returnDate);
+
+
 }

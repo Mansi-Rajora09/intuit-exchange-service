@@ -37,6 +37,6 @@ public class Category {
     @Column(name = "updated_at", nullable = true)
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category")
     private List<Instrument> instruments;
 }

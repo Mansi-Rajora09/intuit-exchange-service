@@ -4,14 +4,17 @@ import com.springboot.intuit.payload.InstrumentDto;
 import com.springboot.intuit.payload.InstrumentDtoResponse;
 import com.springboot.intuit.service.InstrumentService;
 import com.springboot.intuit.utils.AppConstants;
+import com.springboot.intuit.utils.Utility;
 import com.springboot.intuit.utils.Validation;
+
+import java.text.ParseException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/instruments")
+@RequestMapping("/intuit/api/v1/instruments")
 public class InstrumentController {
 
     private InstrumentService instrumentService;
@@ -56,9 +59,12 @@ public class InstrumentController {
 
     // Build Delete Instrument REST API
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteInstrument(@PathVariable("id") Long instrumentId) {
-        instrumentService.deleteInstrument(instrumentId);
+    @DeleteMapping()
+    public ResponseEntity<String> deleteInstrument(
+    @RequestParam(value = "instrumentId",  required = true) Long instrumentId,
+    @RequestParam(value = "userId", required = true) String userId
+    ) {
+        instrumentService.deleteInstrument(instrumentId,userId);
         return ResponseEntity.ok("Instrument deleted successfully!.");
     }
 }

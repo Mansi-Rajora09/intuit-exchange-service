@@ -1,5 +1,9 @@
 package com.springboot.intuit.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.stereotype.Service;
 
 import com.springboot.intuit.entity.Category;
@@ -43,6 +47,13 @@ public class Utility {
         if (instrumentDto.getTags() != null) {
             instrument.setTags(instrumentDto.getTags());
         }
+    }
+
+     public  Date stringToDate(String dateString) throws ParseException {
+        String format = "yyyy-MM-dd";
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        return dateFormat.parse(dateString);
     }
 
     public void updateCategory(CategoryDto categoryDto, Category category) {

@@ -10,13 +10,13 @@ import com.springboot.intuit.utils.AppConstants;
 import com.springboot.intuit.utils.Validation;
 
 @RestController
-@RequestMapping("/api/v1/categories")
+@RequestMapping("/intuit/api/v1/categories")
 public class CategoryController {
 
     private CategoryService categoryService;
     private Validation validation;
 
-    public CategoryController(CategoryService categoryService, Validation val) {
+    public CategoryController(CategoryService categoryService, Validation validation) {
         this.categoryService = categoryService;
         this.validation = validation;
     }

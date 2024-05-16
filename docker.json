@@ -1,0 +1,28 @@
+{
+    "database": {
+        "host": "mysql",
+        "name": "intuit",
+        "port": "3306",
+        "password": "root",
+        "username": "r00t",
+        "maxIdleConn": "100",
+        "maxOpenConn": "100",
+        "debugEnabled": "true"
+      },
+      "log":{
+        "level":"debug"
+      },
+      "redis": {
+        "host": "redis",
+        "port": "6379",
+        "dbId": 0
+      },
+      "auth":{
+        "otpSecret":"secret",
+        "expiry":240,
+        "jwt":{
+          "privateKey":"key.pem",
+          "publicKey":"pub.pem"
+        }
+      }
+}

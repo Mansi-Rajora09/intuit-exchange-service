@@ -36,7 +36,8 @@ public class ExchangeInfo {
     private Date returnDate;
 
     @Column(name = "state")
-    private BookingState state; // Should be an enum in a real-world scenario
+    @Enumerated(EnumType.STRING) // Specifying that the enum should be stored as a string
+    private BookingState state;
 
     @Column(name = "comment")
     private String comment;
@@ -54,5 +55,7 @@ public class ExchangeInfo {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = true)
     private Date updatedAt;
+
+    
 
 }

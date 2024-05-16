@@ -25,4 +25,5 @@ public interface ExchangeInfoService {
 
     ExchangeInfoDto changeBookingStatus(BookingStatusChangeRequest bookingStatusChangeRequest, Long bookingId);
 
+    public void notifyUsersForReturns() ;
 }

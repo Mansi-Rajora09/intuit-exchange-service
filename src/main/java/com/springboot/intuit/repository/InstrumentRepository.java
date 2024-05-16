@@ -10,4 +10,6 @@ public interface InstrumentRepository extends JpaRepository<Instrument, Long> {
 
     Optional<Instrument> findByNameAndUserId(String name, String userId);
 
+    Optional<Instrument> findByIdAndUserId(Long instrumentId, String userId);
+
 }

@@ -26,7 +26,15 @@ public class Validation {
         }
     }
 
+    public void validateUserId(String userId) {
+        // Define a regex pattern to match only integers
+        if (userId == null || userId.trim().isEmpty()) {
+            throw new ValidationException(" userId cannot be empty");
+        }
+    }
+
     public void validateInstrumentDto(InstrumentDto instrumentDto) {
+        validateUserId(instrumentDto.getUserId());
         validateName(instrumentDto.getName());
         validateDescription(instrumentDto.getDescription());
         validateCategoryId(instrumentDto.getCategoryId());

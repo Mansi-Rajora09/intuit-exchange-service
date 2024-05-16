@@ -2,6 +2,7 @@ package com.springboot.intuit.entity;
 
 import lombok.*;
 
+import java.sql.Blob;
 import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -46,6 +47,12 @@ public class Instrument {
 
         @Column(name = "instrument_condition", nullable = true)
         private String instrumentCondition;
+
+        @Column(name = "instrument_video", nullable = true)
+        private Blob instrumentVideo;
+
+        @Column(name = "instrument_image", nullable = true)
+        private Blob instrumentImage;
 
         @Column(name = "tags", nullable = true)
         private String tags;
