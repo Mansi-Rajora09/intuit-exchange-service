@@ -13,4 +13,6 @@ public class AppConstants {
     public static final String CATEGORY = "category:";
     public static final String INSTRUMENTS = "instruments";
     public static final String INSTRUMENT = "instrument:";
+    public static final String INCREASE_ACTION = "increase";
+    public static final String DECREASE_ACTION = "decrease";
 }

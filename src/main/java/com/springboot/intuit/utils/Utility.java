@@ -89,4 +89,13 @@ public class Utility {
         }
     }
 
+    public Long convertToLong(String str) {
+        try {
+            return Long.parseLong(str);
+        } catch (NumberFormatException e) {
+            // Handle the case where the string cannot be parsed to a long
+            System.err.println("Error converting string to long: " + e.getMessage());
+            return null; // Or you can throw an exception or return a default value
+        }
+    }
 }

@@ -18,6 +18,7 @@
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/payload/InstrumentDtoResponse.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/controller/RedisController.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/repository/CategoryRepository.java
+/Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/config/RetrofitConfig.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/utils/BookingState.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/service/impl/RedisServiceImpl.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/entity/Instrument.java
@@ -34,6 +35,7 @@
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/utils/Validation.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/payload/BookingRequest.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/controller/ExchangeController.java
+/Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/service/UserAPIService.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/exception/MusicExchangeAPIException.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/entity/ExchangeInfo.java
 /Users/mansi.rajora/Documents/practice/intuit-music-project/intuit-exchange-service/src/main/java/com/springboot/intuit/payload/CategoryDtoResponse.java
