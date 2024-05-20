@@ -26,5 +26,4 @@ public class InstrumentDto {
     private String instrumentCondition;
     private String availableFromDate;
     private String availableToDate;
-
 }

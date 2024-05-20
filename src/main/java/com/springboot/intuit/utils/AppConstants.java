@@ -15,4 +15,7 @@ public class AppConstants {
     public static final String INSTRUMENT = "instrument:";
     public static final String INCREASE_ACTION = "increase";
     public static final String DECREASE_ACTION = "decrease";
+    public static final String EXCHANGE_TYPE_BONUS = "bonus";
+    public static final String EXCHANGE_TYPE_INSTRUMENT = "instrument";
+
 }

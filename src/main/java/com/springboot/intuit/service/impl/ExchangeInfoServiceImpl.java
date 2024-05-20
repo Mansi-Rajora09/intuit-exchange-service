@@ -61,24 +61,25 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
         public ExchangeInfoDto requestBooking(BookingRequest request) {
                 // Perform validation and business logic
                 InstrumentDto instrument = instrumentService.getInstrument(request.getInstrumentId());
-                if(request.getExchangeType().equalsIgnoreCase("bonus")){
-                         // Call modifyBonusOfUserId for the lender to increase bonus
-    Call<Long> callLender = userAPIService.getBonusOfUserId(request.getBorrowUserId());
-    try {
-        Response<Long> responseLender = callLender.execute();
-        if (responseLender.isSuccessful()) {
-            Long bonusLender = responseLender.body();
-            System.out.println("Bonus get for lender (user ID: " + request.getBorrowUserId() + "): " + bonusLender);
-            if (bonusLender<=0){
-                throw new RuntimeException("User dont have bonus available");
-            }
-        } else {
-            System.err.println("Failed to get bonus for user ");
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-        // Handle exception
-    }
+                if (request.getExchangeType().equalsIgnoreCase(AppConstants.EXCHANGE_TYPE_BONUS)) {
+                        // Call modifyBonusOfUserId for the lender to increase bonus
+                        Call<Long> callLender = userAPIService.getBonusOfUserId(request.getBorrowUserId());
+                        try {
+                                Response<Long> responseLender = callLender.execute();
+                                if (responseLender.isSuccessful()) {
+                                        Long bonusLender = responseLender.body();
+                                        System.out.println("Bonus get for lender (user ID: " + request.getBorrowUserId()
+                                                        + "): " + bonusLender);
+                                        if (bonusLender <= 0) {
+                                                throw new RuntimeException("User dont have bonus available");
+                                        }
+                                } else {
+                                        System.err.println("Failed to get bonus for user ");
+                                }
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                // Handle exception
+                        }
                 }
 
                 // Create a new booking entity
@@ -243,7 +244,7 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
                         ExchangeInfoHistory history = modelMapper.map(booking, ExchangeInfoHistory.class);
                         exchangeInfoHistoryRepository.save(history);
                         // Call the API via Retrofit to fetch additional user information
-                        if (booking.getExchangeType().equalsIgnoreCase("bonus")) {
+                        if (booking.getExchangeType().equalsIgnoreCase(AppConstants.EXCHANGE_TYPE_BONUS)) {
                                 InstrumentDto instrumentDto = instrumentService
                                                 .getInstrument(booking.getInstrumentId());
                                 Long lenderUserId = utility.convertToLong(instrumentDto.getUserId());
@@ -254,6 +255,27 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
                                                 AppConstants.INCREASE_ACTION);
                                 CompletableFuture<Long> borrowerFuture = modifyBonusAsync(userAPIService,
                                                 borrowerUserId, AppConstants.DECREASE_ACTION);
+
+                                // Wait for both CompletableFuture to complete
+                                CompletableFuture.allOf(lenderFuture, borrowerFuture).join();
+
+                                System.out.println(
+                                                "Bonus increased for lender (lenderUserId : " + lenderUserId + "): ");
+                                System.out.println("Bonus decreased for borrower (borrowerUserId : " + borrowerUserId
+                                                + "): ");
+
+                        }
+                        if (booking.getExchangeType().equalsIgnoreCase(AppConstants.EXCHANGE_TYPE_INSTRUMENT)) {
+                                InstrumentDto instrumentDto = instrumentService
+                                                .getInstrument(booking.getInstrumentId());
+                                Long lenderUserId = utility.convertToLong(instrumentDto.getUserId());
+                                Long borrowerUserId = booking.getBorrowUserId();
+
+                                // Asynchronously execute modifyBonusOfUserId for the lender and borrower
+                                CompletableFuture<Long> lenderFuture = modifyBonusAsync(userAPIService, lenderUserId,
+                                                AppConstants.INCREASE_ACTION);
+                                CompletableFuture<Long> borrowerFuture = modifyBonusAsync(userAPIService,
+                                                borrowerUserId, AppConstants.INCREASE_ACTION);
 
                                 // Wait for both CompletableFuture to complete
                                 CompletableFuture.allOf(lenderFuture, borrowerFuture).join();
