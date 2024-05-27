@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 
 import com.springboot.intuit.payload.BookingRequest;
-import com.springboot.intuit.payload.InstrumentDto;
 
 import jakarta.validation.ValidationException;
 
@@ -31,14 +30,6 @@ public class Validation {
         if (userId == null || userId.trim().isEmpty()) {
             throw new ValidationException(" userId cannot be empty");
         }
-    }
-
-    public void validateInstrumentDto(InstrumentDto instrumentDto) {
-        validateUserId(instrumentDto.getUserId());
-        validateName(instrumentDto.getName());
-        validateDescription(instrumentDto.getDescription());
-        validateCategoryId(instrumentDto.getCategoryId());
-        // Add validation for other fields as needed
     }
 
     public void validateDescription(String description) {

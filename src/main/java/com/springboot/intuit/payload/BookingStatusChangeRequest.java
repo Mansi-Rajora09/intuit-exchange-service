@@ -14,4 +14,5 @@ import lombok.Setter;
 
 public class BookingStatusChangeRequest {
     private BookingState state;
+    private Long lenderUserId;
 }

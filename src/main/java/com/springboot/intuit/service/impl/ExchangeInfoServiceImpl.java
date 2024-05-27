@@ -8,16 +8,13 @@ import com.springboot.intuit.payload.BookingRequest;
 import com.springboot.intuit.payload.BookingStatusChangeRequest;
 import com.springboot.intuit.payload.ExchangeInfoDto;
 import com.springboot.intuit.payload.ExchangeInfoDtoResponse;
-import com.springboot.intuit.payload.InstrumentDto;
 import com.springboot.intuit.repository.ExchangeInfoHistoryRepository;
 import com.springboot.intuit.repository.ExchangeInfoRepository;
 import com.springboot.intuit.service.ExchangeInfoService;
-import com.springboot.intuit.service.InstrumentService;
 import com.springboot.intuit.service.UserAPIService;
 import com.springboot.intuit.utils.AppConstants;
 import com.springboot.intuit.utils.BookingState;
 import com.springboot.intuit.utils.Utility;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -28,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -40,17 +36,14 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
 
         private ExchangeInfoRepository exchangeInfoRepository;
         private ExchangeInfoHistoryRepository exchangeInfoHistoryRepository;
-        private InstrumentService instrumentService;
         private ModelMapper modelMapper;
         private Utility utility;
         private UserAPIService userAPIService; // Assuming UserAPIService is your Retrofit service interface
 
         public ExchangeInfoServiceImpl(ExchangeInfoRepository exchangeInfoRepository,
-                        InstrumentService instrumentService,
                         ModelMapper modelMapper, ExchangeInfoHistoryRepository exchangeInfoHistoryRepository,
                         Utility utility, UserAPIService userAPIService) {
                 this.exchangeInfoRepository = exchangeInfoRepository;
-                this.instrumentService = instrumentService;
                 this.modelMapper = modelMapper;
                 this.exchangeInfoHistoryRepository = exchangeInfoHistoryRepository;
                 this.utility = utility;
@@ -60,7 +53,6 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
         @Override
         public ExchangeInfoDto requestBooking(BookingRequest request) {
                 // Perform validation and business logic
-                InstrumentDto instrument = instrumentService.getInstrument(request.getInstrumentId());
                 if (request.getExchangeType().equalsIgnoreCase(AppConstants.EXCHANGE_TYPE_BONUS)) {
                         // Call modifyBonusOfUserId for the lender to increase bonus
                         Call<Long> callLender = userAPIService.getBonusOfUserId(request.getBorrowUserId());
@@ -84,7 +76,7 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
 
                 // Create a new booking entity
                 ExchangeInfo booking = new ExchangeInfo();
-                booking.setInstrumentId(instrument.getId());
+                booking.setInstrumentId(request.getInstrumentId());
                 booking.setBorrowUserId(request.getBorrowUserId());
                 booking.setFromDate(request.getFromDate());
                 booking.setReturnDate(request.getReturnDate());
@@ -245,13 +237,11 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
                         exchangeInfoHistoryRepository.save(history);
                         // Call the API via Retrofit to fetch additional user information
                         if (booking.getExchangeType().equalsIgnoreCase(AppConstants.EXCHANGE_TYPE_BONUS)) {
-                                InstrumentDto instrumentDto = instrumentService
-                                                .getInstrument(booking.getInstrumentId());
-                                Long lenderUserId = utility.convertToLong(instrumentDto.getUserId());
+                               
                                 Long borrowerUserId = booking.getBorrowUserId();
 
                                 // Asynchronously execute modifyBonusOfUserId for the lender and borrower
-                                CompletableFuture<Long> lenderFuture = modifyBonusAsync(userAPIService, lenderUserId,
+                                CompletableFuture<Long> lenderFuture = modifyBonusAsync(userAPIService, bookingStatusChangeRequest.getLenderUserId(),
                                                 AppConstants.INCREASE_ACTION);
                                 CompletableFuture<Long> borrowerFuture = modifyBonusAsync(userAPIService,
                                                 borrowerUserId, AppConstants.DECREASE_ACTION);
@@ -259,20 +249,17 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
                                 // Wait for both CompletableFuture to complete
                                 CompletableFuture.allOf(lenderFuture, borrowerFuture).join();
 
-                                System.out.println(
-                                                "Bonus increased for lender (lenderUserId : " + lenderUserId + "): ");
+                              
                                 System.out.println("Bonus decreased for borrower (borrowerUserId : " + borrowerUserId
                                                 + "): ");
 
                         }
                         if (booking.getExchangeType().equalsIgnoreCase(AppConstants.EXCHANGE_TYPE_INSTRUMENT)) {
-                                InstrumentDto instrumentDto = instrumentService
-                                                .getInstrument(booking.getInstrumentId());
-                                Long lenderUserId = utility.convertToLong(instrumentDto.getUserId());
+                                
                                 Long borrowerUserId = booking.getBorrowUserId();
 
                                 // Asynchronously execute modifyBonusOfUserId for the lender and borrower
-                                CompletableFuture<Long> lenderFuture = modifyBonusAsync(userAPIService, lenderUserId,
+                                CompletableFuture<Long> lenderFuture = modifyBonusAsync(userAPIService, bookingStatusChangeRequest.getLenderUserId(),
                                                 AppConstants.INCREASE_ACTION);
                                 CompletableFuture<Long> borrowerFuture = modifyBonusAsync(userAPIService,
                                                 borrowerUserId, AppConstants.INCREASE_ACTION);
@@ -280,8 +267,6 @@ public class ExchangeInfoServiceImpl implements ExchangeInfoService {
                                 // Wait for both CompletableFuture to complete
                                 CompletableFuture.allOf(lenderFuture, borrowerFuture).join();
 
-                                System.out.println(
-                                                "Bonus increased for lender (lenderUserId : " + lenderUserId + "): ");
                                 System.out.println("Bonus decreased for borrower (borrowerUserId : " + borrowerUserId
                                                 + "): ");
 
